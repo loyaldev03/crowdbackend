@@ -19,10 +19,10 @@
 #  google_plus_url     :string
 #  phone_no            :string
 #  total_backed_amount :integer          default(0)
-#
+#  stripe_user_id      :string
 
 class AuthUserSerializer < ActiveModel::Serializer
-  attributes :id, :name, :image_url, :email, :notifications_count
+  attributes :id, :name, :image_url, :email, :notifications_count, :stripe_user_id
   
   def image_url
     return object.image_url if object.image_url

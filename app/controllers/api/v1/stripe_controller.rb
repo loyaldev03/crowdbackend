@@ -1,3 +1,5 @@
+require 'net/http'
+
 module Api
   module V1
     class StripeController < ApplicationController
@@ -51,6 +53,19 @@ module Api
         end
       end
 
+      def callback_from_stripe
+        debugger
+        code = params["code"]
+        token = params["state"]
+        decode_auth_token ||= JsonWebToken.decode(token)
+        user = User.find(decode_auth_token[:user_id])
+        uri = URI.parse("https://connect.stripe.com/oauth/token" )
+        response = Net::HTTP.post_form(uri, 'client_secret' => "sk_test_E5lvbnrJeCbFsCnsJwK0bVz7", 'code' => code, 'grant_type' => "authorization_code")
+        user[:stripe_user_id] = JSON.parse(response.body)["stripe_user_id"]
+        user.save
+        redirect_to "http://localhost:4200"
+      end
+
       private
 
       def find_project
@@ -61,7 +76,6 @@ module Api
         return @reward = nil if (!params[:reward_id])
         @reward = Reward.find(params[:reward_id])
       end
-
     end
   end
 end

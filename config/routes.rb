@@ -44,6 +44,7 @@ Rails.application.routes.draw do
       #routes for rewards controller
       resources :rewards, only: [:index, :show]    
 
+      get 'stripe_oauth/redirect', to: 'stripe#callback_from_stripe'
     end
   end
 

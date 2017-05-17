@@ -43,3 +43,4 @@ gem 'simple_command'
 gem 'aasm', '~> 4.12.0'
 gem 'stripe'
 gem 'closure_tree'
+gem 'whenever', :require => false
